@@ -7,7 +7,7 @@ import com.alphapay.api.response.AlphaPayResponse;
 public abstract class AlphaPayRequest<T extends AlphaPayResponse>{
 
     @JSONField(serialize = false)
-    private String partnerCode;
+    private String merchantCode;
     @JSONField(serialize = false)
     private String path;
     @JSONField(serialize = false)
@@ -17,12 +17,12 @@ public abstract class AlphaPayRequest<T extends AlphaPayResponse>{
     @JSONField(serialize = false)
     private static String httpMethod = HttpMethod.POST.name();
 
-    public String getPartnerCode() {
-        return partnerCode;
+    public String getMerchantCode() {
+        return merchantCode;
     }
 
-    public void setPartnerCode(String partnerCode) {
-        this.partnerCode = partnerCode;
+    public void setMerchantCode(String merchantCode) {
+        this.merchantCode = merchantCode;
     }
 
     public String getPath(){

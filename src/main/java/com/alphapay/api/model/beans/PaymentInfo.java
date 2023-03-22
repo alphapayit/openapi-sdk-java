@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class PaymentInfo {
 
-    //OFFLINE, ONLINE_QRCODE
+    //OFFLINE_QRCODE, ONLINE_QRCODE
     private String paymentUrl;
     private String paymentQRImage;
 
@@ -13,6 +13,9 @@ public class PaymentInfo {
 
     //JSAPI, ONLINE_WAP, ONLINE_WEB, ONLINE_QRCODE
     private String payUrl;
+
+    //ONLINE_WAP
+    private String channelPayUrl;
 
     public String getPaymentUrl() {
         return paymentUrl;
@@ -44,5 +47,13 @@ public class PaymentInfo {
 
     public void setPayUrl(String payUrl) {
         this.payUrl = payUrl;
+    }
+
+    public String getChannelPayUrl() {
+        return channelPayUrl;
+    }
+
+    public void setChannelPayUrl(String channelPayUrl) {
+        this.channelPayUrl = channelPayUrl;
     }
 }

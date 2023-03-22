@@ -1,6 +1,6 @@
 package com.alphapay.api.response.beans;
 
-import com.alphapay.api.model.beans.Order;
+import com.alphapay.api.model.beans.Ordered;
 import com.alphapay.api.response.AlphaPayResponse;
 
 import java.util.Date;
@@ -10,11 +10,11 @@ public class SearchOrderResponse extends AlphaPayResponse {
     private String paymentStatus;
     private String paymentRequestId;
     private String paymentId;
-    private Order order;
+    private Ordered order;
     private Date paymentCreateTime;
     private Date paymentExpireTime;
     private Date paymentTime;
-    private String productCode;
+    private String scenarioCode;
 
     public String getPaymentStatus() {
         return paymentStatus;
@@ -40,11 +40,11 @@ public class SearchOrderResponse extends AlphaPayResponse {
         this.paymentId = paymentId;
     }
 
-    public Order getOrder() {
+    public Ordered getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(Ordered order) {
         this.order = order;
     }
 
@@ -72,11 +72,11 @@ public class SearchOrderResponse extends AlphaPayResponse {
         this.paymentTime = paymentTime;
     }
 
-    public String getProductCode() {
-        return productCode;
+    public String getScenarioCode() {
+        return scenarioCode;
     }
 
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
+    public void setScenarioCode(String scenarioCode) {
+        this.scenarioCode = scenarioCode;
     }
 }

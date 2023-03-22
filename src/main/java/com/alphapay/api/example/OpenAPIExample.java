@@ -11,28 +11,30 @@ import com.alphapay.api.model.beans.TransactionType;
 import com.alphapay.api.request.beans.*;
 import com.alphapay.api.response.beans.*;
 
+import static com.alphapay.api.APIs.*;
+
 public class OpenAPIExample {
 
     private static final String GATE_WAY_URL = "https://127.0.0.1:9433";
     private static final String merchantPrivateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCoXmTiO1+tLpSG/ADqd0UuONKPdaZNtaC2JbHfhhvCv9Nv7ttnQoqyFa2BzXftQzDWrd2dN08FjKl40Qc/1i7f54ImULZ5qQsLZI7Hzy7r+rP2aZWFLq/CIcIHWsnZVQxoGn7VXdKu1gagTOdn6zdxqjqd7VQkBcK7sN9+tLzEI/6GdjmghMa2q9m6w69lnSr7wHlcSnGadf1oWnjPRZLLSlpYpyINW0nH2MEwCVXCz+V3dIzKsarvTXNIww117a4Hi4l+o9+5mBB1/5XwDVKrhnmMYA3FRyYuhqi9HMj5aoyWVv8bSi+w5K21S2Nw6gZLTKU7fS/pL44Leu6H0K6FAgMBAAECggEAAdYTthbtLnOXWZiGfwgheEVU4I0pLOhJ8iqbk8M/6sISUYJyoJ/saNBNNeDyiaMltXWseNI5Wadk0sU+1b6lgLoi5H2VW+LQ1MU6PGohSiAQFeQlZhAyCQU6uz9Ne8IOclU1pGiTS2ZYqKdmD69USbhQTtgfhowMiWT+rwBUHbR9PxRapWKiTPhXtu/ijLUN8pq7Y4kxY/OCs8WBsdYY6wFdHMmWtW6wzjM1+uWkRjMoiia1B9DW8xMKgY/k9Njzg4iQYWvhQfOyJwMvvcHKC4YLwOyHkOgkCOY+szNeHS/B3oQH3ZbehLiu5vpYQYwnU2+Na+taNcacUKAMwOUUSQKBgQC/CLcnaLRebeZlizSTXs+zGXbU3x9AjqClQxbW7VFgzVvYz/ljMH2Nmc6kR/q1qwSDJ5i7pALMddOo1o7Xm2r9/gUNq8U3aTfT7JPc14mu1y2WRz72sPwEZBXji2/7cC3zxHffnS7Cz5O3l7hCJ+BvyGPfCqoBuojRj8oFTgfL/QKBgQDhoHPdZGUowwi5H1D45KZfYdIEYb1ZpYXGt9vdkt+ZYDy5LLycYbFTolk0DySuTBxsUb18nY0yIyksovNJMpArKaSZvGQZpQJy51F8aBsgRSMnJ0zKRnPODgiv5w/99XMEtZy5uulVNWnPSUWunvC9m+9coYyqJtX7WLqJE+D/KQKBgBElPRsCYL3g6z7N4aggaE/Qx0OPywRGSNDMVq5vmlAv3kB1WhK29W3SEiPYef34HW2QDjs5Gy8ynA6ZQzTCtDWbqORzOD4i6WnR3+uARNE2atcECfimJdhXC0fi6egNR3KLfZ7KQrolW0KtEVKOtawStjP8hwmkrkbwutcDC9wZAoGAcblXTUsSNgaAOhcP0DQnq8H5gp3lO+9TS4NWvgsOyxcX5FopQ0V2hOo6viO34GaamPpmYQ5kodXZJheIOufShP77aUXsyoRChLoVd3hd29kdS9niOb5jFoQ6WrdDd0UlUUVdFrygaYN/rqyHA+o2+8tCTdVbulPS3VquwvMTIGkCgYEAvNFbJPv16JFsIftgnW6X1A4NAxIOMty+Pb8KqOxlgHUg5MQ9TxuANndxRCvAlWuWS9ivU6q1XOwTH0ku9O2HAGta9iT0ipR8WqG/EW/D5SljDwrDSP1YLidE0UWvQiY7lZdLAVbzbOpe//YJAuvngyVy35+63NXtvGr55AfGQFU=";
     private static final String alphaPayPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtzXrrwBnjYnBr/I6Qd5yJ7N2EHNvlFY7aM/5lb2oljfWn3Ns/49Us9ytHtcabLu8rDqQBiouG+JjhVJT79sC0oKGxLyIpfmV4XvZjKb6cbx7NMqlZ9NaJc5UY4qCy75KOOtceRW9QwCsWYWgQtsC+3wKnbeIHTEWvYDoeX1Pi9mR2hI0zDOYKaQxnpTpd4LWok0IvPHYEHwAPwQn+x5swdIouFBx03CSKgmQC/u/Nac7zvw9rUHvPv7//uYLOJAi/1i3+uy5L8qsew+9IxhjUXvV5z1L78wth8Mr0KNjWhA6wlzCAB234PYOuLwJIycVMhtzkOJhMqcI8ZcfZia3uQIDAQAB";
-    private static final String PARTNER_CODE = "CXVJIU";
+    private static final String MERCHANT_CODE = "CXVJIU";
     private static final AlphaPayClient defaultAlphaPayClient = new DefaultAlphaPayClient(GATE_WAY_URL, merchantPrivateKey, alphaPayPublicKey);
 
     private static Base64Encryptor base64Encryptor;
     public static CreateOrderResponse pay(String paymentRequestId) {
         CreateOrderRequest request = new CreateOrderRequest();
-        request.setPartnerCode(PARTNER_CODE);
-        request.setPath("/api/v1/payments/pay");
+        request.setMerchantCode(MERCHANT_CODE);
+        request.setPath(PAY);
 
-        request.setProductCode("OFFLINE");
+        request.setScenarioCode("OFFLINE_QRCODE");
         request.setPaymentRequestId(paymentRequestId);
         Order order = new Order();
         Amount amount = new Amount();
         amount.setValue("100");
         amount.setCurrency("CAD");
         order.setOrderAmount(amount);
-        order.setDescription("Test OFFLINE");
+        order.setDescription("Test OFFLINE_QRCODE");
         order.setRedirectUrl("http://faqds.gw/khbw");
         order.setNotifyUrl("http://vdorirw.ua/vrn");
         request.setOrder(order);
@@ -46,8 +48,8 @@ public class OpenAPIExample {
 
     public static CreateRefundResponse refund(String refundRequestId) {
         CreateRefundRequest request = new CreateRefundRequest();
-        request.setPartnerCode(PARTNER_CODE);
-        request.setPath("/api/v1/payments/refund");
+        request.setMerchantCode(MERCHANT_CODE);
+        request.setPath(REFUND);
 
         Refund refund = new Refund();
         Amount amount = new Amount();
@@ -69,8 +71,8 @@ public class OpenAPIExample {
 
     public static CancelOrderResponse cancel(String paymentId) {
         CancelOrderRequest request = new CancelOrderRequest();
-        request.setPartnerCode(PARTNER_CODE);
-        request.setPath("/api/v1/payments/cancel");
+        request.setMerchantCode(MERCHANT_CODE);
+        request.setPath(CANCEL);
 
         request.setPaymentId(paymentId);
         try {
@@ -83,8 +85,8 @@ public class OpenAPIExample {
 
     public static SearchOrderResponse searchOrder(String paymentId) {
         SearchOrderRequest request = new SearchOrderRequest();
-        request.setPartnerCode(PARTNER_CODE);
-        request.setPath("/api/v1/payments/inquiryPayment");
+        request.setMerchantCode(MERCHANT_CODE);
+        request.setPath(SEARCH_ORDER);
 
         request.setPaymentId(paymentId);
         try {
@@ -97,8 +99,8 @@ public class OpenAPIExample {
 
     public static SearchRefundResponse searchRefund(String refundId, String refundRequestId) {
         SearchRefundRequest request = new SearchRefundRequest();
-        request.setPartnerCode(PARTNER_CODE);
-        request.setPath("/api/v1/payments/inquiryRefund");
+        request.setMerchantCode(MERCHANT_CODE);
+        request.setPath(SEARCH_REFUND);
 
         request.setRefundId(refundId);
         request.setRefundRequestId(refundRequestId);
@@ -112,8 +114,8 @@ public class OpenAPIExample {
 
     public static SearchTransactionsResponse searchTransactions(String date) {
         SearchTransactionsRequest request = new SearchTransactionsRequest();
-        request.setPartnerCode(PARTNER_CODE);
-        request.setPath("/api/v1/payments/transactions");
+        request.setMerchantCode(MERCHANT_CODE);
+        request.setPath(SEARCH_TRANSACTIONS);
 
         request.setDate(date);
         request.setPage(1);
@@ -129,8 +131,8 @@ public class OpenAPIExample {
 
     public static SearchSettlementsResponse searchSettlements(String date) {
         SearchSettlementsRequest request = new SearchSettlementsRequest();
-        request.setPartnerCode(PARTNER_CODE);
-        request.setPath("/api/v1/payments/settlements");
+        request.setMerchantCode(MERCHANT_CODE);
+        request.setPath(SEARCH_SETTLEMENTS);
 
         request.setDate(date);
         try {

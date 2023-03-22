@@ -1,37 +1,130 @@
-### 3 分钟了解如何进入开发
+# OpenAPI SDK: A SDK for accessing AlphaPay services
 
-欢迎使用 Codeup，通过阅读以下内容，你可以快速熟悉 Codeup ，并立即开始今天的工作。
+OpenAPI SDK is a well encapsulated java utilities library which allow user access AlphaPay payment services directly and no need to write any other code for compile HTTPs request for remote services.
 
-### 提交**文件**
+It includes a series of java APIs for developers to complete remote invoke between client and AlphaPay services and also provides signature tool for request signature generation and validation.
 
-首先，你需要了解在 Codeup 中如何提交代码文件，跟着文档「[__提交第一行代码__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f6786b81620014ef7574)」一起操作试试看吧。
+### Version 1.x
 
-### 开启扫描
+First version of SDK APIs. Include payment, refund, cancel and search APIs.
 
-开发过程中，为了更好的管理你的代码资产，Codeup 内置了「[__代码规约扫描__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f68b6b81620014ef7588)」和「[__敏感信息检测__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f6886b81620014ef7587)」服务，你可以在代码库设置-集成与服务中一键开启，开启后提交或合并请求的变更将自动触发扫描，并及时提供结果反馈。
+## Getting started
 
-![](https://img.alicdn.com/tfs/TB1nRDatoz1gK0jSZLeXXb9kVXa-1122-380.png "")
+### Requirements
+- Java 8+
 
-![](https://img.alicdn.com/tfs/TB1PrPatXY7gK0jSZKzXXaikpXa-1122-709.png "")
+### Setting up the dependency
 
-### 代码评审
+The first step is to include OpenAPI SDK into your project, for example, as a Gradle compile dependency:
 
-功能开发完毕后，通常你需要发起「[__代码合并和评审__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f6876b81620014ef7585)」，Codeup 支持多人协作的代码评审服务，你可以通过「[__保护分支__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f68e6b81620014ef758c)」策略及「[__合并请求设置__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f68f6b81620014ef758d)」对合并过程进行流程化管控，同时提供 WebIDE 在线代码评审及冲突解决能力，让你的评审过程更加流畅。
+```groovy
+implementation "com.alphapay.sdk:openapi-sdk-java:1.0.0"
+```
 
-![](https://img.alicdn.com/tfs/TB1XHrctkP2gK0jSZPxXXacQpXa-1432-887.png "")
+and for Maven:
 
-![](https://img.alicdn.com/tfs/TB1V3fctoY1gK0jSZFMXXaWcVXa-1432-600.png "")
+```xml
+<dependency>
+    <groupId>com.alphapay.sdk</groupId>
+    <artifactId>openapi-sdk</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
 
-### 编写文档
+### Start from creating a payment order
 
-项目推进过程中，你的经验和感悟可以直接记录到 Codeup 代码库的「[__文档__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5e13107eedac6e001bd84889)」内，让智慧可视化。
+The second is to write a method to access remote services:
 
-![](https://img.alicdn.com/tfs/TB1BN2ateT2gK0jSZFvXXXnFXXa-1432-700.png "")
+```java
+package com.alphapay.api.example;
 
-### 成员协作
+import com.alphapay.api.*;
 
-是时候邀请成员一起编写卓越的代码工程了，请点击右上角「成员」邀请你的小伙伴开始协作吧！
+public class OpenAPIExample {
 
-### 更多
+        CreateOrderRequest request = new CreateOrderRequest();
+        request.setMerchantCode(MERCHANT_CODE);
+        request.setPath(APIs.PAY);
 
-Git 使用教学、高级功能指引等更多说明，参见[__Codeup帮助文档__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f6756b81620014ef7571)。
+        request.setScenarioCode("OFFLINE_QRCODE");
+        request.setPaymentRequestId(paymentRequestId);
+        Order order = new Order();
+        Amount amount = new Amount();
+        amount.setValue("100");
+        amount.setCurrency("CAD");
+        order.setOrderAmount(amount);
+        order.setDescription("Test OFFLINE_QRCODE");
+        order.setRedirectUrl("http://faqds.gw/khbw");
+        order.setNotifyUrl("http://vdorirw.ua/vrn");
+        request.setOrder(order);
+        try {
+            CreateOrderResponse response = defaultAlphaPayClient.execute(request);
+            return response;
+        } catch (AlphaPayApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+### Base classes
+
+ - `com.alphapay.api.DefaultAlphaPayClient`: A client for communicating with AlphaPay services.
+ - `com.alphapay.api.request.AlphaPayRequest`: All requests for AlphaPay services are based on AlphaPayRequest.
+ - `com.alphapay.api.response.AlphaPayResponse`: The response from AlphaPay services will be compiled as an AlphaPayResponse.
+ - `com.alphapay.api.exception.AlphaPayApiException`: The exception raised during the communication with remote service must be handled.
+
+### Initial an AlphaPay client
+
+The gateway url is our Open API domain: `https://openapi.alphapay.com`. How to get the merchant private key and AlphaPay public key can be found in our [API reference documents](https://www.alphapay.com/api/CAD_en.html).
+
+```java
+private static final String GATE_WAY_URL = "https://openapi.alphapay.com";
+private static final String merchantPrivateKey = "MIIEvQIBA";
+private static final String alphaPayPublicKey = "MIIBIjANBq";
+
+AlphaPayClient defaultAlphaPayClient = new DefaultAlphaPayClient(GATE_WAY_URL, merchantPrivateKey, alphaPayPublicKey);
+```
+
+### Complete a remote invoke
+
+The `AlphaPayResponse` is the base class of all service response type. You can just use the subclass of `AlphaPayResponse`, like: `CreateOrderResponse`.
+
+```java
+try {
+    AlphaPayResponse response = defaultAlphaPayClient.execute(request);
+    return response;
+} catch (AlphaPayApiException e) {
+    // handle exception at here
+}
+```
+
+### About APIs Document
+
+To check out our HTTP API documents for the details of remote invoke between client and AlphaPay services, please visit: [API reference documents](https://www.alphapay.com/api/CAD_en.html).
+
+## Bugs and Feedback
+
+For bugs, questions and discussions please use the [Github Issues](https://github.com/alphapayit/openapi-sdk-java/issues).
+
+## LICENSE
+
+Copyright (c) 2023-present, AlphaPay
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

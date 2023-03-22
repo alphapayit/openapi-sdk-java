@@ -17,7 +17,6 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 public class SignatureTool {
 
@@ -27,18 +26,18 @@ public class SignatureTool {
 
     private static Base64Encryptor base64Encryptor = new DefaultBase64Encryptor();
 
-    public static String sign(String httpMethod, String path, String partnerCode, String reqTimeStr, String nonce, String reqBody, String merchantPrivateKey) throws Exception{
-        String reqContent = genSignContent(httpMethod, path, partnerCode, reqTimeStr, nonce, reqBody);
+    public static String sign(String httpMethod, String path, String merchantCode, String reqTimeStr, String nonce, String reqBody, String merchantPrivateKey) throws Exception{
+        String reqContent = genSignContent(httpMethod, path, merchantCode, reqTimeStr, nonce, reqBody);
         return encode(signWithSHA256RSA(reqContent, merchantPrivateKey), DEFAULT_CHARSET);
     }
 
-    public static boolean verify(String httpMethod, String path, String partnerCode, String rspTimeStr, String nonce, String rspBody, String signature, String alphaPayPublicKey) throws Exception {
-        String rspContent = genSignContent(httpMethod, path, partnerCode, rspTimeStr, nonce, rspBody);
+    public static boolean verify(String httpMethod, String path, String merchantCode, String rspTimeStr, String nonce, String rspBody, String signature, String alphaPayPublicKey) throws Exception {
+        String rspContent = genSignContent(httpMethod, path, merchantCode, rspTimeStr, nonce, rspBody);
         return verifySignatureWithSHA256RSA(rspContent, decode(signature, DEFAULT_CHARSET), alphaPayPublicKey);
     }
 
-    public static String genSignContent(String httpMethod, String path, String partnerCode, String timeString, String nonce, String content){
-        String payload = httpMethod + " " + path + "\n" + partnerCode + "." + timeString + "." + nonce
+    public static String genSignContent(String httpMethod, String path, String merchantCode, String timeString, String nonce, String content){
+        String payload = httpMethod + " " + path + "\n" + merchantCode + "." + timeString + "." + nonce
                 + "." + content;
 
         return payload;
@@ -47,7 +46,7 @@ public class SignatureTool {
     /**
      * Sign the contents of the merchant request
      *
-     * @param reqContent = httpMethod + " " + uriWithQueryString + "\n" + partnerCode + "." + timeString + "." + reqBody;
+     * @param reqContent = httpMethod + " " + uriWithQueryString + "\n" + merchantCode + "." + timeString + "." + reqBody;
      * @param merchantPrivateKey the private key
      * @return the string
      * @throws Exception the exception
@@ -59,7 +58,7 @@ public class SignatureTool {
     /**
      * Check the response of AlphaPay
      *
-     * @param rspContent = httpMethod + " " + uriWithQueryString + "\n" + partnerCode + "." + timeString + "." + rspBody;
+     * @param rspContent = httpMethod + " " + uriWithQueryString + "\n" + merchantCode + "." + timeString + "." + rspBody;
      * @param signature  the signature
      * @param alphaPayPublicKey  the public key
      * @return the boolean

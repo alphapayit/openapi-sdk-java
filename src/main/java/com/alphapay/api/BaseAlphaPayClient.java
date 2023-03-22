@@ -44,7 +44,7 @@ public abstract class BaseAlphaPayClient implements AlphaPayClient {
 
         checkRequestParam(alphaPayRequest);
 
-        String  partnerCode    = alphaPayRequest.getPartnerCode();
+        String  merchantCode    = alphaPayRequest.getMerchantCode();
         String  httpMethod  = alphaPayRequest.getHttpMethod();
         String  path        = alphaPayRequest.getPath();
         Integer keyVersion  = alphaPayRequest.getKeyVersion();
@@ -55,12 +55,12 @@ public abstract class BaseAlphaPayClient implements AlphaPayClient {
         /**
          * 对内容加签(Sign the content)
          */
-        String signValue = genSignValue(httpMethod, path, partnerCode, reqTime, nonce, reqBody);
+        String signValue = genSignValue(httpMethod, path, merchantCode, reqTime, nonce, reqBody);
 
         /**
          *  生成必要header(Generate required headers)
          */
-        Map<String, String> header       = buildBaseHeader(reqTime, nonce, partnerCode, keyVersion, signValue);
+        Map<String, String> header       = buildBaseHeader(reqTime, nonce, merchantCode, keyVersion, signValue);
         Map<String, String> customHeader = buildCustomHeader();
         if(customHeader != null && customHeader.size() > 0){
             header.putAll(customHeader);
@@ -98,7 +98,7 @@ public abstract class BaseAlphaPayClient implements AlphaPayClient {
         /**
          * 对返回结果验签(Verify the result signature)
          */
-        boolean isVerifySuccess = checkRspSign(httpMethod, path, partnerCode, rspTime, rspNonce, rspBody, rspSignValue);
+        boolean isVerifySuccess = checkRspSign(httpMethod, path, merchantCode, rspTime, rspNonce, rspBody, rspSignValue);
         if(!isVerifySuccess){
             throw new AlphaPayApiException("Response signature verify fail.");
         }
@@ -106,19 +106,19 @@ public abstract class BaseAlphaPayClient implements AlphaPayClient {
         return alphaPayResponse;
     }
 
-    private String genSignValue(String httpMethod, String path, String partnerCode, String requestTime, String nonce, String reqBody)throws AlphaPayApiException{
+    private String genSignValue(String httpMethod, String path, String merchantCode, String requestTime, String nonce, String reqBody)throws AlphaPayApiException{
         String signatureValue;
         try{
-            signatureValue = SignatureTool.sign(httpMethod, path, partnerCode, requestTime, nonce, reqBody, merchantPrivateKey);
+            signatureValue = SignatureTool.sign(httpMethod, path, merchantCode, requestTime, nonce, reqBody, merchantPrivateKey);
         } catch(Exception e){
             throw new AlphaPayApiException(e);
         }
         return signatureValue;
     }
 
-    private boolean checkRspSign(String httpMethod, String path, String partnerCode, String responseTime, String nonce, String rspBody, String rspSignValue) throws AlphaPayApiException{
+    private boolean checkRspSign(String httpMethod, String path, String merchantCode, String responseTime, String nonce, String rspBody, String rspSignValue) throws AlphaPayApiException{
         try{
-            boolean isVerify = SignatureTool.verify(httpMethod, path, partnerCode, responseTime, nonce, rspBody, rspSignValue, alphaPayPublicKey);
+            boolean isVerify = SignatureTool.verify(httpMethod, path, merchantCode, responseTime, nonce, rspBody, rspSignValue, alphaPayPublicKey);
             return isVerify;
         } catch(Exception e){
             throw new AlphaPayApiException(e);
@@ -131,7 +131,7 @@ public abstract class BaseAlphaPayClient implements AlphaPayClient {
             throw new AlphaPayApiException("alphaPayRequest can't null");
         }
 
-        String partnerCode = alphaPayRequest.getPartnerCode();
+        String merchantCode = alphaPayRequest.getMerchantCode();
         String httpMethod = alphaPayRequest.getHttpMethod();
         String path = alphaPayRequest.getPath();
 
@@ -139,8 +139,8 @@ public abstract class BaseAlphaPayClient implements AlphaPayClient {
             throw new AlphaPayApiException("gatewayUrl can't null");
         }
 
-        if(StringUtils.isBlank(partnerCode)){
-            throw new AlphaPayApiException("partnerCode can't null");
+        if(StringUtils.isBlank(merchantCode)){
+            throw new AlphaPayApiException("merchantCode can't null");
         }
 
         if(StringUtils.isBlank(httpMethod)){
@@ -170,12 +170,12 @@ public abstract class BaseAlphaPayClient implements AlphaPayClient {
 
     }
 
-    private Map<String,String> buildBaseHeader(String requestTime, String nonce, String partnerCode, Integer keyVersion, String signatureValue){
+    private Map<String,String> buildBaseHeader(String requestTime, String nonce, String merchantCode, Integer keyVersion, String signatureValue){
         Map<String, String> header = new HashMap<String, String>();
         header.put(Constants.CONTENT_TYPE_HEADER, "application/json; charset=UTF-8");
         header.put(Constants.REQ_TIME_HEADER, requestTime);
         header.put(Constants.REQ_NONCE_HEADER, nonce);
-        header.put(Constants.PARTNER_CODE_HEADER, partnerCode);
+        header.put(Constants.MERCHANT_CODE_HEADER, merchantCode);
         if(keyVersion == null){
             keyVersion = DEFULT_KEY_VERSION;
         }

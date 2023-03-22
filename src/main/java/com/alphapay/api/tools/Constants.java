@@ -6,7 +6,7 @@ public interface Constants {
 
     String DEFAULT_CHARSET = "UTF-8";
 
-    String PARTNER_CODE_HEADER = "Partner-Code";
+    String MERCHANT_CODE_HEADER = "Merchant-Code";
 
     String ACCEPT_HEADER = "Accept";
 
