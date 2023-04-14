@@ -1,5 +1,9 @@
 # OpenAPI SDK: A SDK for accessing AlphaPay services
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.alphapay.sdk/openapi-sdk-java/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.alphapay.sdk/openapi-sdk-java)
+[![javadoc](https://javadoc.io/badge2/com.alphapay.sdk/openapi-sdk-java/javadoc.svg)](https://javadoc.io/doc/com.alphapay.sdk/openapi-sdk-java)
+[![License](https://img.shields.io/github/license/alphapayit/openapi-sdk-java)](https://github.com/alphapayit/openapi-sdk-java/blob/main/LICENSE)
+
 OpenAPI SDK is a well encapsulated java utilities library which allow user access AlphaPay payment services directly and no need to write any other code for compile HTTPs request for remote services.
 
 It includes a series of java APIs for developers to complete remote invoke between client and AlphaPay services and also provides signature tool for request signature generation and validation.
@@ -26,7 +30,7 @@ and for Maven:
 ```xml
 <dependency>
     <groupId>com.alphapay.sdk</groupId>
-    <artifactId>openapi-sdk</artifactId>
+    <artifactId>openapi-sdk-java</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
