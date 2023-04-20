@@ -8,9 +8,13 @@ OpenAPI SDK is a well encapsulated java utilities library which allow user acces
 
 It includes a series of java APIs for developers to complete remote invoke between client and AlphaPay services and also provides signature tool for request signature generation and validation.
 
-### Version 1.x
+### Version 1.0.0
 
 First version of SDK APIs. Include payment, refund, cancel and search APIs.
+
+### Version 1.0.1
+
+Add credit card payment support.
 
 ## Getting started
 
@@ -22,7 +26,7 @@ First version of SDK APIs. Include payment, refund, cancel and search APIs.
 The first step is to include OpenAPI SDK into your project, for example, as a Gradle compile dependency:
 
 ```groovy
-implementation "com.alphapay.sdk:openapi-sdk-java:1.0.0"
+implementation "com.alphapay.sdk:openapi-sdk-java:1.0.1"
 ```
 
 and for Maven:
@@ -31,7 +35,7 @@ and for Maven:
 <dependency>
     <groupId>com.alphapay.sdk</groupId>
     <artifactId>openapi-sdk-java</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -46,9 +50,10 @@ import com.alphapay.api.*;
 
 public class OpenAPIExample {
 
+    public CreateOrderResponse pay(String paymentRequestId) {
         CreateOrderRequest request = new CreateOrderRequest();
         request.setMerchantCode(MERCHANT_CODE);
-        request.setPath(APIs.PAY);
+        request.setPath(PAY);
 
         request.setScenarioCode("OFFLINE_QRCODE");
         request.setPaymentRequestId(paymentRequestId);
@@ -58,8 +63,8 @@ public class OpenAPIExample {
         amount.setCurrency("CAD");
         order.setOrderAmount(amount);
         order.setDescription("Test OFFLINE_QRCODE");
-        order.setRedirectUrl("http://faqds.gw/khbw");
-        order.setNotifyUrl("http://vdorirw.ua/vrn");
+        order.setNotifyUrl("https://alphapay.com/success");
+        order.setRedirectUrl("https://alphapay.com/successPage");
         request.setOrder(order);
         try {
             CreateOrderResponse response = defaultAlphaPayClient.execute(request);

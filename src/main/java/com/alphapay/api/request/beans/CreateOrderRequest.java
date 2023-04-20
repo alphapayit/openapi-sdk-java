@@ -1,9 +1,6 @@
 package com.alphapay.api.request.beans;
 
-import com.alphapay.api.model.beans.Customer;
-import com.alphapay.api.model.beans.Env;
-import com.alphapay.api.model.beans.Order;
-import com.alphapay.api.model.beans.PaymentMethod;
+import com.alphapay.api.model.beans.*;
 import com.alphapay.api.request.AlphaPayRequest;
 import com.alphapay.api.response.beans.CreateOrderResponse;
 
@@ -16,6 +13,8 @@ public class CreateOrderRequest extends AlphaPayRequest<CreateOrderResponse> {
     private Order order;
     private PaymentMethod paymentMethod;
     private Customer customer;
+    //Third Card
+    private PaymentCard card;
     //APP
     private Env env;
 
@@ -57,6 +56,14 @@ public class CreateOrderRequest extends AlphaPayRequest<CreateOrderResponse> {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public PaymentCard getCard() {
+        return card;
+    }
+
+    public void setCard(PaymentCard card) {
+        this.card = card;
     }
 
     public Env getEnv() {

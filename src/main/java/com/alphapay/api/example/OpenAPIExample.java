@@ -35,8 +35,8 @@ public class OpenAPIExample {
         amount.setCurrency("CAD");
         order.setOrderAmount(amount);
         order.setDescription("Test OFFLINE_QRCODE");
-        order.setRedirectUrl("http://faqds.gw/khbw");
-        order.setNotifyUrl("http://vdorirw.ua/vrn");
+        order.setNotifyUrl("https://alphapay.com/success");
+        order.setRedirectUrl("https://alphapay.com/successPage");
         request.setOrder(order);
         try {
             CreateOrderResponse response = defaultAlphaPayClient.execute(request);
@@ -57,7 +57,7 @@ public class OpenAPIExample {
         amount.setCurrency("CAD");
         refund.setRefundAmount(amount);
         refund.setDescription("Test Refund");
-        refund.setNotifyUrl("http://vdorirw.ua/vrn");
+        refund.setNotifyUrl("https://alphapay.com/success");
         request.setRefund(refund);
         request.setRefundRequestId(refundRequestId);
         request.setPaymentId("1");
