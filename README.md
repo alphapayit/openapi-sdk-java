@@ -85,7 +85,7 @@ public class OpenAPIExample {
 
 ### Initial an AlphaPay client
 
-The gateway url is our Open API domain: `https://openapi.alphapay.ca`. How to get the merchant private key and AlphaPay public key can be found in our [API reference documents](https://www.alphapay.com/api/CAD_en.html).
+The gateway url is our Open API domain: `https://openapi.alphapay.ca`. How to get the merchant private key and AlphaPay public key can be found in our [API reference documents](https://apidoc.alphapay.com/open-api/en/).
 
 ```java
 private static final String GATE_WAY_URL = "https://openapi.alphapay.ca";
@@ -110,7 +110,7 @@ try {
 
 ### About APIs Document
 
-To check out our HTTP API documents for the details of remote invoke between client and AlphaPay services, please visit: [API reference documents](https://www.alphapay.com/api/CAD_en.html).
+To check out our HTTP API documents for the details of remote invoke between client and AlphaPay services, please visit: [API reference documents](https://apidoc.alphapay.com/open-api/en/).
 
 ## Bugs and Feedback
 
