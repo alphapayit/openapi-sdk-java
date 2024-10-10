@@ -1,7 +1,5 @@
 package com.alphapay.api.model.beans;
 
-import java.util.Map;
-
 public class PaymentInfo {
 
     //OFFLINE_QRCODE, ONLINE_QRCODE
@@ -9,7 +7,7 @@ public class PaymentInfo {
     private String paymentQRImage;
 
     //NATIVE_JSAPI
-    private Map<String, ?> sdkParams;
+    private Object sdkParams;
 
     //JSAPI, ONLINE_WAP, ONLINE_WEB, ONLINE_QRCODE
     private String payUrl;
@@ -33,11 +31,11 @@ public class PaymentInfo {
         this.paymentQRImage = paymentQRImage;
     }
 
-    public Map<String, ?> getSdkParams() {
+    public Object getSdkParams() {
         return sdkParams;
     }
 
-    public void setSdkParams(Map<String, ?> sdkParams) {
+    public void setSdkParams(Object sdkParams) {
         this.sdkParams = sdkParams;
     }
 
