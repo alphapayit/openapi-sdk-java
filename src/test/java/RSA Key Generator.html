@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RSA Key Generator</title>
+    <style>
+        textarea { width: 100%; height: 200px; margin: 10px 0; }
+        button { padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h2>RSA Key Generator (PKCS#8)</h2>
+    <label>Key Size: 
+        <select id="keySize">
+            <option value="2048" selected>2048</option>
+        </select>
+    </label>
+    <br><br>
+    <button onclick="generateKeys()">Generate Keys</button>
+    <div>
+        <h3>Private Key</h3>
+        <textarea id="privateKey"></textarea>
+    </div>
+    <div>
+        <h3>Public Key</h3>
+        <textarea id="publicKey"></textarea>
+    </div>
+
+    <script>
+        async function generateKeys() {
+            const keySize = parseInt(document.getElementById('keySize').value);
+            try {
+                // Generate RSA key pair
+                const keyPair = await window.crypto.subtle.generateKey(
+                    {
+                        name: "RSA-OAEP",
+                        modulusLength: keySize,
+                        publicExponent: new Uint8Array([1, 0, 1]), // 65537
+                        hash: { name: "SHA-256" }
+                    },
+                    true, // extractable
+                    ["encrypt", "decrypt"]
+                );
+
+                // Export private key in PKCS#8 format
+                const privateKeyData = await window.crypto.subtle.exportKey("pkcs8", keyPair.privateKey);
+                const privateKeyPem = arrayBufferToPem(privateKeyData, "PRIVATE KEY");
+
+                // Export public key in SPKI format
+                const publicKeyData = await window.crypto.subtle.exportKey("spki", keyPair.publicKey);
+                const publicKeyPem = arrayBufferToPem(publicKeyData, "PUBLIC KEY");
+
+                document.getElementById('privateKey').value = privateKeyPem;
+                document.getElementById('publicKey').value = publicKeyPem;
+            } catch (error) {
+                console.error('Error generating keys:', error);
+                alert('An error occurred while generating keys. Check the console for details.');
+            }
+        }
+
+        function arrayBufferToPem(buffer, label) {
+            const binary = String.fromCharCode(...new Uint8Array(buffer));
+            const base64 = btoa(binary);
+            const pemContent = base64.match(/.{1,64}/g).join('\n');
+            return `-----BEGIN ${label}-----\n${pemContent}\n-----END ${label}-----`;
+        }
+    </script>
+</body>
+</html>
